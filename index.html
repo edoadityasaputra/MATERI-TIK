@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Input Nama Materi</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background-color: #2196F3;
+      color: white;
+      text-align: center;
+      padding: 25px 10px;
+    }
+
+    .header img {
+      width: 120px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 30px auto;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    button {
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      color: white;
+      cursor: pointer;
+      background-color: #2196F3;
+    }
+
+    #loading, #result {
+      width: 90%;
+      max-width: 400px;
+      margin: 20px auto;
+      text-align: center;
+    }
+
+    #loading {
+      display: none;
+      font-size: 18px;
+      color: #555;
+    }
+
+    #result {
+      display: none;
+    }
+
+    .rekap {
+      background: #f2f8ff;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 10px;
+      text-align: left;
+    }
+
+    .backBtn {
+      background-color: #4CAF50;
+      margin-top: 20px;
+      width: 100%;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <img src="https://edoadityasaputra.github.io/barcode-to-sheet/MI-Khoirul-Huda_C3.png">
+    <h2>Form Input Nama Materi</h2>
+    <h3>MI Khoirul Huda Bedahan</h3>
+  </div>
+
+  <form id="materiForm">
+
+    <label>Hari</label>
+    <select name="hari" required>
+      <option value="" disabled selected>-- Pilih Hari --</option>
+      <option>Senin</option>
+      <option>Selasa</option>
+      <option>Rabu</option>
+      <option>Kamis</option>
+      <option>Jumat</option>
+      <option>Sabtu</option>
+    </select>
+
+    <label>Tanggal</label>
+    <input type="date" name="tanggal" required>
+
+    <label>Nama Materi</label>
+    <input type="text" name="nama_materi" placeholder="Masukkan Nama Materi" required>
+
+    <button type="submit">Kirim</button>
+  </form>
+
+  <div id="loading">⏳ Mengirim data...</div>
+
+  <div id="result">
+    <p class="success">✅ Data berhasil dikirim!</p>
+    <div class="rekap" id="rekapData"></div>
+    <button class="backBtn" id="backBtn">Kembali ke Form</button>
+  </div>
+
+<script>
+
+  // 🔥 GANTI GAS DI SINI
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgZWmt_de2u6vOU8rn1JX7ZTNOPwOhZt15_DvcdA9Dlp5d7r5-qTTk8-2Dso2PBoVh/exec";
+
+  const form = document.getElementById("materiForm");
+  const loadingDiv = document.getElementById("loading");
+  const resultDiv = document.getElementById("result");
+  const rekapDiv = document.getElementById("rekapData");
+  const backBtn = document.getElementById("backBtn");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    form.style.display = "none";
+    loadingDiv.style.display = "block";
+
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch(SCRIPT_URL, { method: "POST", body: formData });
+      const text = await res.text();
+      const json = JSON.parse(text);
+      const d = json.data;
+
+      loadingDiv.style.display = "none";
+      resultDiv.style.display = "block";
+
+      rekapDiv.innerHTML = `
+        <p><b>Hari:</b> ${d.hari}</p>
+        <p><b>Tanggal:</b> ${d.tanggal}</p>
+        <p><b>Nama Materi:</b> ${d.nama_materi}</p>
+      `;
+
+      form.reset();
+    }
+    catch (err) {
+      loadingDiv.innerHTML = `<span style="color:red;">❌ Gagal mengirim data.</span>`;
+    }
+  });
+
+  backBtn.addEventListener("click", () => {
+    resultDiv.style.display = "none";
+    form.style.display = "block";
+  });
+
+</script>
+
+</body>
+</html>
