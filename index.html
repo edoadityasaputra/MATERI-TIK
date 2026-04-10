@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form Input Nama Materi</title>
+  <title>Form Input Pembelajaran</title>
 
   <style>
     body {
@@ -55,7 +55,19 @@
       font-size: 16px;
       color: white;
       cursor: pointer;
+    }
+
+    .btn-primary {
       background-color: #2196F3;
+    }
+
+    .btn-rekap {
+      background-color: #4CAF50; /* HIJAU */
+      width: 90%;
+      max-width: 400px;
+      margin: 20px auto;
+      display: block;
+      color: white;
     }
 
     #loading, #result {
@@ -87,21 +99,22 @@
       background-color: #4CAF50;
       margin-top: 20px;
       width: 100%;
-      color: white;
-      padding: 10px;
-      border-radius: 8px;
     }
   </style>
 </head>
 
 <body>
+
   <div class="header">
     <img src="https://edoadityasaputra.github.io/barcode-to-sheet/MI-Khoirul-Huda_C3.png">
-    <h2>Form Input Nama Materi</h2>
+    <h2>Form Pembelajaran & Tugas</h2>
     <h3>MI Khoirul Huda Bedahan</h3>
   </div>
 
   <form id="materiForm">
+
+    <label>Kelas</label>
+    <input type="text" name="kelas" placeholder="Contoh: 6A" required>
 
     <label>Hari</label>
     <select name="hari" required>
@@ -117,24 +130,36 @@
     <label>Tanggal</label>
     <input type="date" name="tanggal" required>
 
+    <label>Waktu</label>
+    <input type="time" name="waktu" required>
+
     <label>Nama Materi</label>
-    <input type="text" name="nama_materi" placeholder="Masukkan Nama Materi" required>
+    <input type="text" name="nama_materi" placeholder="Masukkan Materi" required>
 
-    <button type="submit">Kirim</button>
+    <label>Tugas</label>
+    <input type="text" name="tugas" placeholder="Masukkan Tugas (opsional)">
+
+    <button type="submit" class="btn-primary">Kirim</button>
   </form>
-
+  
+<!-- 🔥 TOMBOL REKAP (POSISI BENAR) -->
+<button class="btn-rekap" onclick="bukaRekap()">📊 Rekap Pembelajaran & Tugas</button>
+  
   <div id="loading">⏳ Mengirim data...</div>
 
   <div id="result">
-    <p class="success">✅ Data berhasil dikirim!</p>
+    <p>✅ Data berhasil dikirim!</p>
     <div class="rekap" id="rekapData"></div>
     <button class="backBtn" id="backBtn">Kembali ke Form</button>
   </div>
 
 <script>
 
-  // 🔥 GANTI GAS DI SINI
+  // 🔥 URL GAS (POST)
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgZWmt_de2u6vOU8rn1JX7ZTNOPwOhZt15_DvcdA9Dlp5d7r5-qTTk8-2Dso2PBoVh/exec";
+
+  // 🔥 URL REKAP (GET)
+  const REKAP_URL = "https://script.google.com/macros/s/AKfycbwgZWmt_de2u6vOU8rn1JX7ZTNOPwOhZt15_DvcdA9Dlp5d7r5-qTTk8-2Dso2PBoVh/exec";
 
   const form = document.getElementById("materiForm");
   const loadingDiv = document.getElementById("loading");
@@ -160,9 +185,12 @@
       resultDiv.style.display = "block";
 
       rekapDiv.innerHTML = `
+        <p><b>Kelas:</b> ${d.kelas}</p>
         <p><b>Hari:</b> ${d.hari}</p>
         <p><b>Tanggal:</b> ${d.tanggal}</p>
+        <p><b>Waktu:</b> ${d.waktu}</p>
         <p><b>Nama Materi:</b> ${d.nama_materi}</p>
+        <p><b>Tugas:</b> ${d.tugas}</p>
       `;
 
       form.reset();
@@ -175,7 +203,12 @@
   backBtn.addEventListener("click", () => {
     resultDiv.style.display = "none";
     form.style.display = "block";
+    loadingDiv.style.display = "none";
   });
+
+  function bukaRekap() {
+    window.open(REKAP_URL, "_blank");
+  }
 
 </script>
 
