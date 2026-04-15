@@ -141,8 +141,14 @@
     <label>Tanggal</label>
     <input type="date" name="tanggal" required>
 
-    <label>Waktu</label>
-    <input type="time" name="waktu" required>
+<label>Jam Pelajaran</label>
+<select name="waktu" required>
+  <option value="" disabled selected>-- Pilih Jam --</option>
+  <option value="07.30-08.30">Jam ke-1 (07.30 - 08.30)</option>
+  <option value="08.30-09.30">Jam ke-2 (08.30 - 09.30)</option>
+  <option value="10.00-11.00">Jam ke-3 (10.00 - 11.00)</option>
+  <option value="11.00-12.00">Jam ke-4 (11.00 - 12.00)</option>
+</select>
 
     <label>Nama Materi</label>
     <input type="text" name="nama_materi" placeholder="Masukkan Materi" required>
